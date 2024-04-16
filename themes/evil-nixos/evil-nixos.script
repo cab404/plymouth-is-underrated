@@ -91,7 +91,18 @@ logo.update = fun () {
 };
 objstore.add(logo);
 
-label = Object(whitetext("loading NixOS...", 20));
+fun labeltext() {
+    mode = Plymouth.GetMode();
+    if (mode == "boot") return "loading NixOS...";
+    if (mode == "shutdown") return "shutting down...";
+    if (mode == "reboot") return "reboot initiated...";
+    if (mode == "updates") return "system update in progress...";
+    if (mode == "system-upgrade") return "applying upgrades...";
+    if (mode == "firmware-upgrade") return "updating firmware...";
+    if (mode == "unknown") return "??? [REDACTED] in [DATA EXPUNGED] ???";
+}
+
+label = Object(whitetext(labeltext(), 20));
 label.below(logo);
 label.align_left(logo);
 
